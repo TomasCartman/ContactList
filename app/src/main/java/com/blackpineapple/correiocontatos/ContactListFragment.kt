@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,7 +26,7 @@ class ContactListFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         contactListViewModel = ViewModelProviders.of(this).get(ContactListViewModel::class.java)
-
+        contactListViewModel.getAllContacts()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -44,5 +45,13 @@ class ContactListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        contactListViewModel.contactsLiveData.observe(
+            viewLifecycleOwner,
+            Observer {
+                contactList -> adapter.submitList(contactList)
+                contactRecyclerView.visibility = View.VISIBLE
+                progressBar.visibility = View.GONE
+            }
+        )
     }
 }

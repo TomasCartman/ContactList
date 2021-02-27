@@ -4,5 +4,6 @@
     <string name="phone_number">Phone number:</string>
     <string name="search_contact">Search contact</string>
     <string name="add_contact">Add contact</string>
+    <string name="save">Save</string>
     <string name="cancel">Cancel</string>
 </resources>

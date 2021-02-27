@@ -10,4 +10,8 @@ class ContactListViewModel : ViewModel() {
     fun getAllContacts() {
         contactsLiveData = repository.getAllContacts()
     }
+
+    fun putContact(name: String, phone: Long) {
+        repository.putContact(name, phone)
+    }
 }

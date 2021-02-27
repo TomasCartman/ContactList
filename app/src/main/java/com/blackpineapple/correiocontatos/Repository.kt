@@ -51,6 +51,12 @@ class Repository {
         return girlLiveData
     }
 
+    fun putContact(name: String, phone: Long) {
+        val hashMap = HashMap<String, Long>()
+        hashMap["number"] = phone
+        database.child(CHILD_CONTACT).child(name).setValue(hashMap)
+    }
+
     private inner class ContactEventListener : ChildEventListener {
         override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
             val contactList = mutableListOf<Contact>()

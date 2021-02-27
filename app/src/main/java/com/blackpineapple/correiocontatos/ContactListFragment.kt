@@ -1,6 +1,7 @@
 package com.blackpineapple.correiocontatos
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -9,6 +10,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.blackpineapple.correiocontatos.recyclerview.ContactAdapter
@@ -80,6 +82,7 @@ class ContactListFragment : Fragment(), ContactFormFragment.ContactFormDialogLis
         recyclerViewLinearLayoutManager = LinearLayoutManager(context)
         contactRecyclerView.layoutManager = recyclerViewLinearLayoutManager
         contactRecyclerView.adapter = adapter
+        contactRecyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
 
         return view
     }
@@ -97,9 +100,16 @@ class ContactListFragment : Fragment(), ContactFormFragment.ContactFormDialogLis
         )
     }
 
-    override fun onDialogPositiveClick(dialog: DialogFragment) {
+    override fun onDialogPositiveClick(dialog: DialogFragment, name: String, number: String) {
         // Save or update the contact
         Toast.makeText(context, "onDialogPositiveClick", Toast.LENGTH_SHORT).show()
+        Log.i(TAG, "\nName: $name\nNumber: $number")
+        if(name.isNotEmpty() && number.isNotEmpty()) {
+            val phone = number.toLong()
+            contactListViewModel.putContact(name, phone)
+        } else {
+            Toast.makeText(context, "Name and number length should be greater then 1 character", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onDialogNegativeClick(dialog: DialogFragment) {

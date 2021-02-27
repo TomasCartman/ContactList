@@ -1,10 +1,11 @@
 package com.blackpineapple.correiocontatos
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ProgressBar
+import android.widget.Toast
+import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -14,7 +15,7 @@ import com.blackpineapple.correiocontatos.recyclerview.ContactAdapter
 
 private const val TAG = "ContactListFragment"
 
-class ContactListFragment : Fragment() {
+class ContactListFragment : Fragment(), ContactFormFragment.ContactFormDialogListener {
     private lateinit var contactListViewModel: ContactListViewModel
     private lateinit var contactRecyclerView: RecyclerView
     private lateinit var recyclerViewLinearLayoutManager: LinearLayoutManager
@@ -25,8 +26,49 @@ class ContactListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setHasOptionsMenu(true)
+
         contactListViewModel = ViewModelProviders.of(this).get(ContactListViewModel::class.java)
         contactListViewModel.getAllContacts()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+
+        inflater.inflate(R.menu.fragment_list_menu, menu)
+        val searchItem: MenuItem = menu.findItem(R.id.menu_item_search)
+        val searchView = searchItem.actionView as SearchView
+
+        searchView.apply {
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    if(query != null) {
+                        // Search in the contact list
+                    }
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    if(newText.isNullOrEmpty()) {
+                        // Put in the adapter the entire list of contacts cause the newText is null or empty
+                    }
+                    return true
+                }
+            })
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId) {
+            R.id.menu_item_add -> {
+                // open table to add a new contact
+                val newFragment = ContactFormFragment()
+                newFragment.setTargetFragment(this, 1)
+                newFragment.show(parentFragmentManager, "contact_form")
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -53,5 +95,15 @@ class ContactListFragment : Fragment() {
                 progressBar.visibility = View.GONE
             }
         )
+    }
+
+    override fun onDialogPositiveClick(dialog: DialogFragment) {
+        // Save or update the contact
+        Toast.makeText(context, "onDialogPositiveClick", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onDialogNegativeClick(dialog: DialogFragment) {
+        // Do nothing
+        Toast.makeText(context, "onDialogNegativeClick", Toast.LENGTH_SHORT).show()
     }
 }

@@ -24,7 +24,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
-        android:text="@string/phone_number"
+        android:text="@string/phone"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -48,5 +48,5 @@
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/textView2"
         app:layout_constraintTop_toTopOf="@+id/textView2"
-        tools:text="Contact phone" />
+        tools:text="9999999999" />
 </androidx.constraintlayout.widget.ConstraintLayout>

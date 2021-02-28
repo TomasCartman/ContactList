@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">Correios Contatos</string>
     <string name="name">Name:</string>
-    <string name="phone_number">Phone number:</string>
+    <string name="phone">Phone:</string>
     <string name="search_contact">Search contact</string>
     <string name="add_contact">Add contact</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="phone_number">Phone number</string>
 </resources>

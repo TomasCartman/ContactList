@@ -2,6 +2,7 @@ package com.blackpineapple.correiocontatos.recyclerview
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.DiffUtil
 import com.blackpineapple.correiocontatos.Contact
 import com.blackpineapple.correiocontatos.R
@@ -16,6 +17,9 @@ class ContactAdapter : androidx.recyclerview.widget.ListAdapter<Contact, Contact
 
     override fun onBindViewHolder(holder: ContactHolder, position: Int) {
         val contact = getItem(position)
+
+        val animation = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.fade_animation)
+        holder.itemView.startAnimation(animation)
 
         holder.bind(contact)
     }

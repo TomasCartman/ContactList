@@ -7,6 +7,8 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="correios_yellow">#E5B800</color>
-    <color name="correios_blue">#159ED4</color>
+    <color name="correios_yellow">#EDBF04</color>
+    <color name="correios_light_yellow">#EDCD48</color>
+    <color name="correios_blue">#031443</color>
+    <color name="correios_light_blue">#131E85</color>
 </resources>

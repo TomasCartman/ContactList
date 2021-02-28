@@ -9,6 +9,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,7 +31,10 @@ class ContactListFragment : Fragment(), ContactFormFragment.ContactFormDialogLis
 
         setHasOptionsMenu(true)
 
-        contactListViewModel = ViewModelProviders.of(this).get(ContactListViewModel::class.java)
+        val factory = ViewModelProvider.NewInstanceFactory()
+        val viewModelProvider = ViewModelProvider(viewModelStore, factory)
+        contactListViewModel = viewModelProvider.get(ContactListViewModel::class.java)
+
         contactListViewModel.getAllContacts()
     }
 

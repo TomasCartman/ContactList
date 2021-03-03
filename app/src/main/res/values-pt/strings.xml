@@ -8,4 +8,6 @@
     <string name="save">Salvar</string>
     <string name="cancel">Cancelar</string>
     <string name="phone_number">Número de telefone</string>
+    <string name="delete">Deletar</string>
+    <string name="contact">Contato</string>
 </resources>

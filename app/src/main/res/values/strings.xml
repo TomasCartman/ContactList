@@ -6,5 +6,7 @@
     <string name="add_contact">Add contact</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
     <string name="phone_number">Phone number</string>
+    <string name="contact">Contact</string>
 </resources>

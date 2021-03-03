@@ -124,6 +124,8 @@ class ContactListFragment : Fragment(), ContactFormFragment.ContactFormDialogLis
     override fun onDialogNegativeClick(dialog: DialogFragment, name: String) {
         // Delete the contact
         Toast.makeText(context, "onDialogNegativeClick", Toast.LENGTH_SHORT).show()
+        if(name.isNotEmpty()) contactListViewModel.deleteContact(name)
+        else Toast.makeText(context, "You cannot delete a contact before put it on the list", Toast.LENGTH_SHORT).show()
     }
 
     override fun onDialogNeutralClick(dialog: DialogFragment) {

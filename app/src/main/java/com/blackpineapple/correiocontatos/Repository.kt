@@ -57,6 +57,10 @@ class Repository {
         database.child(CHILD_CONTACT).child(name).setValue(hashMap)
     }
 
+    fun deleteContact(name: String) {
+        database.child(CHILD_CONTACT).child(name).setValue(null)
+    }
+
     private inner class ContactEventListener : ChildEventListener {
         override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
             val contactList = mutableListOf<Contact>()

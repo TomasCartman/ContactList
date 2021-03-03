@@ -14,4 +14,8 @@ class ContactListViewModel : ViewModel() {
     fun putContact(name: String, phone: Long) {
         repository.putContact(name, phone)
     }
+
+    fun deleteContact(name: String) {
+        repository.deleteContact(name)
+    }
 }

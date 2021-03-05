@@ -9,4 +9,7 @@
     <string name="delete">Delete</string>
     <string name="phone_number">Phone number</string>
     <string name="contact">Contact</string>
+    <string name="undo">Undo</string>
+    <string name="removed">removed</string>
+    <string name="new_contact">New contact</string>
 </resources>

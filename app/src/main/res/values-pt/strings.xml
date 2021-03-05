@@ -10,4 +10,7 @@
     <string name="phone_number">Número de telefone</string>
     <string name="delete">Deletar</string>
     <string name="contact">Contato</string>
+    <string name="undo">Desfazer</string>
+    <string name="removed">removido</string>
+    <string name="new_contact">Novo contato</string>
 </resources>

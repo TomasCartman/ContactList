@@ -14,7 +14,7 @@ const val ARG_NUMBER = "number"
 class ContactFormFragment : DialogFragment() {
     interface ContactFormDialogListener {
         fun onDialogPositiveClick(dialog: DialogFragment, name: String, number: String)
-        fun onDialogNegativeClick(dialog: DialogFragment, name: String)
+        fun onDialogNegativeClick(dialog: DialogFragment, name: String, number: String)
         fun onDialogNeutralClick(dialog: DialogFragment)
     }
 
@@ -24,6 +24,7 @@ class ContactFormFragment : DialogFragment() {
             val inflater = requireActivity().layoutInflater
 
             val view = inflater.inflate(R.layout.dialog_contact, null)
+            var dialogTitle = resources.getString(R.string.new_contact)
 
             if(arguments != null) {
                 val nameEditText = view.findViewById<EditText>(R.id.name_editText)
@@ -34,10 +35,11 @@ class ContactFormFragment : DialogFragment() {
                     setText(name)
                     isEnabled = false
                 }
+                dialogTitle = resources.getString(R.string.contact)
                 numberEditText.setText(number.toString())
             }
 
-            builder.setTitle(R.string.contact)
+            builder.setTitle(dialogTitle)
             builder.setView(view)
                     .setPositiveButton(R.string.save, DialogInterface.OnClickListener {
                         _, _ ->
@@ -55,14 +57,18 @@ class ContactFormFragment : DialogFragment() {
                             fragment -> (fragment as ContactFormDialogListener).onDialogNeutralClick(this)
                         }
                     })
-                    .setNegativeButton(R.string.delete, DialogInterface.OnClickListener {
-                        _, _ ->
-                        val nameEditText = view.findViewById<EditText>(R.id.name_editText)
-                        val name = nameEditText.text.toString()
-                        targetFragment?.let {
-                            fragment -> (fragment as ContactFormDialogListener).onDialogNegativeClick(this, name)
-                        }
-                    })
+            if(arguments != null) {
+                builder.setNegativeButton(R.string.delete, DialogInterface.OnClickListener {
+                    _, _ ->
+                    val nameEditText = view.findViewById<EditText>(R.id.name_editText)
+                    val numberEditText = view.findViewById<EditText>(R.id.phone_editText)
+                    val name = nameEditText.text.toString()
+                    val number = numberEditText.text.toString()
+                    targetFragment?.let {
+                        fragment -> (fragment as ContactFormDialogListener).onDialogNegativeClick(this, name, number)
+                    }
+                })
+            }
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
     }

@@ -1,6 +1,7 @@
 package com.blackpineapple.correiocontatos
 
 import android.content.Intent
+import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +11,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -19,6 +21,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.pavlospt.roundedletterview.RoundedLetterView
+import com.google.android.material.snackbar.Snackbar
 import kotlin.random.Random
 
 private const val TAG = "ContactListFragment"
@@ -29,6 +32,7 @@ class ContactListFragment : Fragment(), ContactFormFragment.ContactFormDialogLis
     private lateinit var contactRecyclerView: RecyclerView
     private lateinit var recyclerViewLinearLayoutManager: LinearLayoutManager
     private lateinit var progressBar: ProgressBar
+    private lateinit var coordinatorLayout: CoordinatorLayout
     private val colorList: MutableList<Int> = mutableListOf()
     private var adapter: ContactAdapter = ContactAdapter()
 
@@ -93,6 +97,7 @@ class ContactListFragment : Fragment(), ContactFormFragment.ContactFormDialogLis
 
         contactRecyclerView = view.findViewById(R.id.recycler_view)
         progressBar = view.findViewById(R.id.progress_bar)
+        coordinatorLayout = view.findViewById(R.id.coordinator_layout)
 
         context?.let {
             colorList.add(it.getColor(R.color.pink))
@@ -134,22 +139,32 @@ class ContactListFragment : Fragment(), ContactFormFragment.ContactFormDialogLis
         Log.i(TAG, "\nName: $name\nNumber: $number")
         if(name.isNotEmpty() && number.isNotEmpty()) {
             val phone = number.toLong()
-            contactListViewModel.putContact(name, phone)
+            contactListViewModel.putContact(name.trim(), phone)
         } else {
             Toast.makeText(context, "Name and number length should be greater then 1 character", Toast.LENGTH_SHORT).show()
         }
     }
 
-    override fun onDialogNegativeClick(dialog: DialogFragment, name: String) {
+    override fun onDialogNegativeClick(dialog: DialogFragment, name: String, number: String) {
         // Delete the contact
-        Toast.makeText(context, "onDialogNegativeClick", Toast.LENGTH_SHORT).show()
-        if(name.isNotEmpty()) contactListViewModel.deleteContact(name)
-        else Toast.makeText(context, "You cannot delete a contact before put it on the list", Toast.LENGTH_SHORT).show()
+        if(name.isNotEmpty()) {
+            contactListViewModel.deleteContact(name)
+            snackBarUndoDelete(name, number)
+        }
     }
 
     override fun onDialogNeutralClick(dialog: DialogFragment) {
         // Do nothing
-        Toast.makeText(context, "onDialogNeutralClick", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun snackBarUndoDelete(name: String, number: String) {
+        val snackTextLabel = name + " " + resources.getString(R.string.removed)
+        val snackBar: Snackbar = Snackbar.make(coordinatorLayout, snackTextLabel, Snackbar.LENGTH_SHORT)
+        snackBar.setAction(R.string.undo, View.OnClickListener {
+            val phone = number.toLong()
+            contactListViewModel.putContact(name, phone)
+        })
+        snackBar.show()
     }
 
     private inner class ContactHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener, View.OnLongClickListener {

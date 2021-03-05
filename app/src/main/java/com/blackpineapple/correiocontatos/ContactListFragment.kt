@@ -14,11 +14,12 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.github.pavlospt.roundedletterview.RoundedLetterView
+import kotlin.random.Random
 
 private const val TAG = "ContactListFragment"
 const val DIALOG_CONTACT_FORM = "DialogContactForm"
@@ -28,6 +29,7 @@ class ContactListFragment : Fragment(), ContactFormFragment.ContactFormDialogLis
     private lateinit var contactRecyclerView: RecyclerView
     private lateinit var recyclerViewLinearLayoutManager: LinearLayoutManager
     private lateinit var progressBar: ProgressBar
+    private val colorList: MutableList<Int> = mutableListOf()
     private var adapter: ContactAdapter = ContactAdapter()
 
 
@@ -54,14 +56,18 @@ class ContactListFragment : Fragment(), ContactFormFragment.ContactFormDialogLis
             setOnQueryTextListener(object : SearchView.OnQueryTextListener{
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     if(query != null) {
-                        // Search in the contact list
+                        val contactList = contactListViewModel.searchContact(query)
+                        adapter.submitList(contactList)
+                        searchItem.collapseActionView()
+                        searchView.clearFocus()
                     }
                     return true
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
                     if(newText.isNullOrEmpty()) {
-                        // Put in the adapter the entire list of contacts cause the newText is null or empty
+                        val allContactList = contactListViewModel.contactsLiveData.value
+                        adapter.submitList(allContactList)
                     }
                     return true
                 }
@@ -87,6 +93,19 @@ class ContactListFragment : Fragment(), ContactFormFragment.ContactFormDialogLis
 
         contactRecyclerView = view.findViewById(R.id.recycler_view)
         progressBar = view.findViewById(R.id.progress_bar)
+
+        context?.let {
+            colorList.add(it.getColor(R.color.pink))
+            colorList.add(it.getColor(R.color.violet))
+            colorList.add(it.getColor(R.color.blue))
+            colorList.add(it.getColor(R.color.cyan))
+            colorList.add(it.getColor(R.color.green))
+            colorList.add(it.getColor(R.color.dark_green))
+            colorList.add(it.getColor(R.color.yellow))
+            colorList.add(it.getColor(R.color.orange))
+            colorList.add(it.getColor(R.color.red))
+            colorList.add(it.getColor(R.color.light_brown))
+        }
 
         recyclerViewLinearLayoutManager = LinearLayoutManager(context)
         contactRecyclerView.layoutManager = recyclerViewLinearLayoutManager
@@ -137,6 +156,7 @@ class ContactListFragment : Fragment(), ContactFormFragment.ContactFormDialogLis
         private lateinit var contact: Contact
         private val textViewContactName: TextView = view.findViewById(R.id.contact_name_text_view)
         private val textViewContactPhone: TextView = view.findViewById(R.id.contact_phone_text_view)
+        private val roundedLetterView: RoundedLetterView = view.findViewById(R.id.rlv_name_view)
 
         init {
             itemView.setOnClickListener(this)
@@ -146,6 +166,9 @@ class ContactListFragment : Fragment(), ContactFormFragment.ContactFormDialogLis
         fun bind(contact: Contact) {
             this.contact = contact
 
+            val randomBackgroundColor = Random.nextInt(0, colorList.size - 1)
+            roundedLetterView.backgroundColor = colorList[randomBackgroundColor]
+            roundedLetterView.titleText = contact.name.substring(0, 1)
             textViewContactName.text = contact.name
             textViewContactPhone.text = contact.number.toString()
         }

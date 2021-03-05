@@ -18,4 +18,18 @@ class ContactListViewModel : ViewModel() {
     fun deleteContact(name: String) {
         repository.deleteContact(name)
     }
+
+    fun searchContact(searchName: String): List<Contact> {
+        val listSearchName: MutableList<Contact> = mutableListOf()
+        val contactList = contactsLiveData.value
+        if(contactList != null) {
+            for(contact in contactList) {
+                if(contact.name.startsWith(searchName, true)) {
+                    listSearchName.add(contact)
+                }
+            }
+            return listSearchName
+        }
+        return emptyList()
+    }
 }

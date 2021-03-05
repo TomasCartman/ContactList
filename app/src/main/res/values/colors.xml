@@ -7,8 +7,21 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="correios_yellow">#EDBF04</color>
-    <color name="correios_light_yellow">#EDCD48</color>
+    <color name="correios_yellow">#ffe246</color>
+    <color name="correios_light_yellow">#fff056</color>
     <color name="correios_blue">#031443</color>
     <color name="correios_light_blue">#131E85</color>
+
+
+    <color name="pink">#f72585</color>
+    <color name="violet">#560bad</color>
+    <color name="blue">#3f37c9</color>
+    <color name="cyan">#4cc9f0</color>
+    <color name="green">#52b788</color>
+    <color name="dark_green">#1b4332</color>
+    <color name="yellow">#f9c74f</color>
+    <color name="orange">#f9844a</color>
+    <color name="red">#f94144</color>
+    <color name="light_brown">#d8a47f</color>
+
 </resources>
